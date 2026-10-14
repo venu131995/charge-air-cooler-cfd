@@ -43,6 +43,9 @@ as found rather than tuning the model to the correlation; the comparison is limi
 | Energy balance, every heat-transfer case | wall heat = advected + diffusive heat through the boundaries, 0.09-0.36 % |
 | Mesh sensitivity | cylinder Re 40: Nu 3.2706 vs 3.2748 with 3.3x cells; tube bank Re 100: developed Nu 7.017 vs 7.045 with 3.9x cells |
 | Domain size | cylinder Re 1: Nu 0.824 vs 0.812 with a domain twice as large (the slowest-decaying case) |
+| Independent: temperature in P3 instead of P2 | cylinder Nu changes by 0.03 % (Re 20 and 40); tube bank developed Nu 6.984 vs 7.017 (0.5 %) |
+| Independent: plain Galerkin instead of SUPG | cylinder Nu identical to 4 digits; tube bank 7.017 in both |
+| Independent: Nu from the energy method (heat carried out) instead of the wall flux | 2.4654 vs 2.4595 (Re 20), 3.2757 vs 3.2705 (Re 40) |
 
 The model is 2-D and steady with constant properties, so momentum and mass are conserved by the weak form and energy
 is checked globally above. 5 automated tests in `tests/`.
@@ -108,12 +111,14 @@ correlation-based cooler model would be conservative here.
 | `src/hx/meshes.py` | gmsh geometries: DFG channel, single cylinder, staggered tube bank with per-row tags |
 | `scripts/run_verification.py` | Kovasznay, heat MMS, DFG 2D-1 |
 | `scripts/run_analysis.py` | cylinder and tube-bank cases, correlations, reduced model, figures |
+| `scripts/independent_checks.py` | the same cases with P3 temperature, without SUPG, and with the energy method |
 
 ## Run (FEniCSx 0.11 with gmsh)
 
 ```bash
 python scripts/run_verification.py      # about 5 min
 python scripts/run_analysis.py          # about 10 min
+python scripts/independent_checks.py    # about 10 min
 python -m pytest -q tests
 ```
 
