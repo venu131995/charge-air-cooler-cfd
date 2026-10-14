@@ -1,0 +1,2 @@
+# FEniCSx (DOLFINx 0.11) with gmsh, from conda-forge:
+#   fenics-dolfinx=0.11 python-gmsh pandas matplotlib pytest
